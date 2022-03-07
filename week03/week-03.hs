@@ -9,10 +9,11 @@ If m > 1
 Else 
   SUM(n, 1) = Sum of first n natural numbers.
 --}
-{--Write function calculateF
+{-- 
+Write function calculateF
 calculateF(n) = n, if n < 3
 calculateF(n) = calculateF(n - 1) + 2*calculateF(n - 2) + calculateFf(n - 3), otherwise
--- }
+--}
 -- Write function coundDigits n a b ,calculating how many time there is the digit n in range of Integers [a,b]
 -- Write function calculateSin n by the formula in week03-task.png
 {--
