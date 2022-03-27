@@ -1,6 +1,6 @@
 -- transpose matrix defined as list of lists
 -- Validate if for one number x all function will be applicable, return true
--- ValidateNumber 1 [(\x -> x < 4), (\x -> x*x == x)] == True
+-- validateNumber 1 [(\x -> x < 4), (\x -> x*x == x)] == True
 -- We have [(City, Temperaure)] defined by [(Integer, [Char])]. Find the name of the city most close up to the average one into the list
 -- Implement quick sort
 
