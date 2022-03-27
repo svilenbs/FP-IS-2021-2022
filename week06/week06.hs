@@ -2,7 +2,9 @@
 -- Validate if for one number x all function will be applicable, return true
 -- validateNumber 1 [(\x -> x < 4), (\x -> x*x == x)] == True
 -- We have [(City, Temperaure)] defined by [(Integer, [Char])]. Find the name of the city most close up to the average one into the list
--- Implement quick sort
+-- Implement quicksort1
+-- Implement collatzConjecture n return [Integer] generating https://en.wikipedia.org/wiki/Collatz_conjecture with a list of all numbers for this rule from n up to 1
+-- Implement maxCollatzConjecture a b, return the number with the longest path from a up to b.
 
 {--
 Напишете ф-я lSystem axiom rules, която да връща безкраен списък от стрингове със следните свойства:
