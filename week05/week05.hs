@@ -6,13 +6,76 @@ Based on the [(cityName, tempreature, month, year)] named with cityInformation
 			  [([Char], Number, Integer, Integer)] and month should be in range [0,11]
 --}
 
--- write funciion getCityNames [cityInformation], retursns [cityName] withtout duplications
--- write function getYearInformation [cityInformation] cityName Year, returning (tempreature, month) for a spesific Year
--- write function invalidValues [cityInformation], returns [cityInformation] with invalind months value of dublication of the information for yeat and month of a city
+filter1 _ [] = []
+filter1 f (x:xs)
+   | f x == True = x: filter1 f xs
+   | otherwise =  filter1 f xs
+
+plus1 x = x+1
+plus2 = \x -> x+2
+
+map1 _ [] = []
+map1 f (x:xs) = f x : map1 f xs
+
+sum1 a b c = a+b+c
+sum2 a = sum1 a
+
+sum3 a b c = a + b + c
+sum4 a = sum1 a
+-- Lamda function
+
+-- Искаме да вземем всички нечетни числа от списък и да ги умножим по 2
+sol1 l = map1 (\x -> 2*x) $ filter1 odd l
+
+sol2 l = [ 2*x | x <- l, mod x 2 /= 0, x < 7 || x > 11  ]
+
+--sol3 x = [(a,b,c)] a^2+b^2 = c^2 c < x 
+sol3 x = [ (a,b,c) | a <- [1..x-1], b <- [1..x-1], c <- [1..x-1], a^2+b^2 == c^2 ]
+
+snd1 (_, t) = t
+
+
+
+{--
+
+Based on the [(cityName, tempreature, month, year)] named with cityInformation
+			  [([Char], Number, Integer, Integer)] and month should be in range [0,11]
+--}
+
+-- write function getCityNames [cityInformation], returns [cityName] without duplications
+
+getCityNames l = unique [ cityName | (cityName, _, _, _) <- l]
+
+unique [] = []
+unique xs = uniqueHelper xs []
+    where
+    uniqueHelper xs sol
+        | xs == [] = sol
+        | otherwise = if elem (head xs) sol then uniqueHelper (tail xs) sol else uniqueHelper (tail xs) (head xs:sol)
+
+        
+
+-- write function getYearInformation [cityInformation] cityName Year, returning (tempreature, month) for a spesific Year and cityName
+getYearInformation l cityNameParam yearParam = [(tempreature, month) | (cityName, tempreature, month, year) <- l, yearParam == year, cityNameParam == cityName]
+
+
+-- write function mostHotCity [cityInformation] year month, returning the most hot city for a current year and month.
+mostHotCity l yearParam monthParam = maximumPeperature [(tempreature, cityName) | (cityName, tempreature, month, year) <- l, yearParam == year, monthParam == month]
+
+maximumPeperature (x:xs) =  maximumPeperatureHead xs x
+    where
+    maximumPeperatureHead xs sol
+        | xs == []  = sol
+        | fst (head xs) > fst sol = maximumPeperatureHead (tail xs) (head xs)
+        | otherwise = maximumPeperatureHead (tail xs) sol
+
+
+-- write function invalidValues [cityInformation], returns [cityInformation] with invalind months value of duplication of the information for year and month of a city
 -- write function getValidYearInformation [cityInformation] cityName Year returning (tempreature, month) for a spesific Year
 -- write function averageYearTemperature [cityInformation] Year, returns the average temperature for the current city in case that we dont have enough information, such as missing month returns -1, otherwise the correct value
 -- write function mostHotCity [cityInformation] Year, returning the most hot city for a current year.
 -- write function citiesByTemperature [cityInformation] Year, returning a list [(City, temperature)] based on the average temperature fir the current year, sorted acs.
+
 
 testData = [ 
     ("Burgas", -19, 0, 2010),
