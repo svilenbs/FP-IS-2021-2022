@@ -28,8 +28,44 @@ Cylinder with two arguments for the radius of the base and height.
 Create a shape from every type and output it.
 --}
 
+data Shape a = Circle a | Rectangle a a |  Triangle a a a | Cylinder a a deriving (Show)
+-- ==, /=
+
+instance Eq a => Eq (Shape a) where
+  Circle a == Circle b = a==b
+  Rectangle a b == Rectangle c d =  a == c && b == d
+  Cylinder a b == Cylinder c d =  a == c && b == d
+  Triangle a b c == Triangle d e f =  a == d && b == e && c == f
+  _ == _ = False
+  a /= b = not(a == b)
+data Bool1 = True1 | False1 deriving (Eq, Ord)
+instance Show Bool1 where
+  show True1 = "OK"
+  show False1 = "NOT OK"
+
+-- "OK", "NOT OK"   
+boolTest :: Bool1
+boolTest = True1
+
+isEqual :: Eq a => Shape a -> Shape a -> Bool
+isEqual (Circle a) (Circle b) = a == b
+isEqual (Rectangle a b ) (Rectangle c d) = a == c && b == d
+isEqual _ _ = False
+
+test :: Shape Integer
+test = Circle 4
+
+-- is2D = (...)?
+
+is2D :: Shape a -> Bool
+is2D (Cylinder _ _) = False
+is2D _ = True
+-- is2D (Rectangle _ _) = True
+-- is2D Triangle {} = True
+-- is2D (Circle _ ) = True
 -- Define is2D object return information if the Shape is 2d object.
 -- Define function area for Shape objects
+
 -- By list of of Shapes, return the object with the biggest area.
 -- By list of of Shapes return only triangles and recrangles with same area.
 
@@ -48,3 +84,22 @@ Adj [('b', "cf"), ('c', "bf"), ('d', ""), ('f', "bck"), ('g', "h"), ('h', "g"), 
 --}
 
 -- All problems from here https://wiki.haskell.org/99_questions/80_to_89 ...
+
+graph = [(1,[2,3]),
+        (2, []),
+        (3, [4]),
+        (4,[]),
+        (5,[])]
+
+-- return all Nodes for this graph
+getNode :: [(a, b)] -> [a]
+getNode a = fst $ unzip a
+
+getNode1 :: [(b1, b2)] -> [b1]
+getNode1 a = map (\(a,_) -> a) a
+
+isDirectPath g from to = hasPath isDirectPathHelper
+  where
+  hasPath Nothing = False
+  hasPath (Just (_,b)) = to `elem` b
+  isDirectPathHelper = find (\(a,b) -> from == a) g
