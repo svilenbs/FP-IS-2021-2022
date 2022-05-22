@@ -40,12 +40,8 @@ sumOnLevel 0 (Node value _ _) = value
 sumOnLevel k (Node value l r) = sumOnLevel (k-1) l + sumOnLevel (k-1) r
 
 
-testTreeChar = Node 'a' (Node 'b' (Node 'f' Leaf Leaf) Leaf) (Node 'c' (Node 'd' Leaf Leaf) (Node 'e' Leaf Leaf))
 t = Node 'a' (Node 'b' Leaf Leaf) Leaf
 
-containsWordHelper :: Eq a => [a] -> Tree a -> Bool
-containsWordHelper [] Leaf = True 
-containsWordHelper _ Leaf = False
 
 
 -- containsWordHelper word (Node key l r)
@@ -57,13 +53,16 @@ containsWordHelper _ Leaf = False
 -- 	| otherwise = containsWordHelper (tail word) l || containsWordHelper (tail word) r
 -- testNode (Node key l r) word =  head word == key && (l /= Leaf || r /= Leaf)
 
+containsWord node@(Node key l r) word = containsWordHelper node word 
+    || containsWord l word ||  containsWord r word 
+containsWord _ _ = False
 
-containsWord Leaf [] = True
-containsWord Leaf _ = False 
-containsWord (Node value left right) word
+containsWordHelper Leaf [] = True
+containsWordHelper Leaf _ = False 
+containsWordHelper (Node value left right) word
     | length word == 1 && (left /= Leaf || right /= Leaf) = False
     | length word == 1 && head word == value && left == Leaf && right == Leaf = True
-    | otherwise = head word == value && (containsWord left (tail word) || containsWord right (tail word))
+    | otherwise = head word == value && (containsWordHelper left (tail word) || containsWordHelper right (tail word))
 
 -- Check if we have a number in a Tree that is meet more than once in the Tree?
 
@@ -71,3 +70,27 @@ containsWord (Node value left right) word
 -- Problem 81
 -- (**) Path from one node to another one
 -- Write a function that, given two nodes a and b in a graph, returns all the acyclic paths from a to b.
+-- "test" [ "test" ]
+-- [Char] [ [Char] ]
+-- getWords _ [] ...
+
+
+genWordsHelper Leaf word = [word]
+genWordsHelper (Node w l r) word
+    | l == Leaf && r == Leaf = [word ++ [w]]
+    | l == Leaf =  genWordsHelper r (word ++ [w])
+    | r == Leaf =  genWordsHelper l (word ++ [w])
+    | otherwise = genWordsHelper l (word ++ [w]) ++ genWordsHelper r (word ++ [w])
+
+testTreeChar = Node 'a' (Node 'b' (Node 'f' Leaf Leaf) Leaf) (Node 'c' (Node 'd' Leaf Leaf) (Node 'e' (Node 'q' Leaf Leaf) Leaf))
+testTreeChar1 = Node 'a' (Node 'b' (Node 'f' Leaf Leaf) Leaf) (Node 'c' (Node 'd' Leaf Leaf) (Node 'e' (Node 'q' Leaf Leaf) Leaf))
+testTreeChar2 = Node 'a' (Node 'b' (Node 'f' Leaf Leaf) Leaf) (Node 'c' (Node 'd' Leaf Leaf) (Node 'e' (Node 'q' Leaf Leaf) Leaf))
+
+genWords :: Eq a => Tree a -> [[a]]
+genWords Leaf = []
+genWords node@(Node key l r) = genWordsHelper node [] ++ genWords l ++ genWords r
+
+allContain items = allConainHelper(map (\x -> genWords x) items)
+
+allConainHelper :: (Foldable t, Eq a) => t [a] -> [a]
+allConainHelper items = foldl1 (\x y -> [z | z <- x, elem z y]) items
