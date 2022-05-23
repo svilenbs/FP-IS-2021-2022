@@ -1,13 +1,23 @@
+-- By defined Binary Tree of Int find the sum of all elements on the highest level in the tree.
 -- By defined Binary Tree of Char find the longest word. In case of more that one, return one of them.
 -- Return true if a Tree is a Binary  Search Tree.
 -- By defined non-binary tree (Nodes are list) with Integer values return the sum of all elements.
 
+data Tree a = Leaf | Node a (Tree a) (Tree a) deriving (Show)
+
+
+testIntTree :: Tree Integer
+testIntTree = Node 6 (Node 2 (Node 1 (Node (-1) Leaf Leaf) Leaf) Leaf) (Node 13 (Node 10 Leaf Leaf) (Node 18 (Node 17 Leaf Leaf) (Node 22 Leaf Leaf)))
+testCharTree :: Tree Char
+testCharTree = Node 'a' (Node 'b'
+                            (Node 'd' Leaf Leaf) (Node 'e' Leaf Leaf)) (Node 'c' (Node 'f' (Node 'p' (Node 'z' Leaf Leaf) Leaf) (Node 's' Leaf Leaf)) (Node 'q' Leaf Leaf))
 
 -- By location (East/West/North/South) find the name of the hotest city for month and year.
 -- By location find the city with the closest city up to average for this regioun for a spesific year. 
 -- Definition ([Char], Int, Int, Int)
 -- (Name of the city, temperature, month, year)
-testData = [ 
+
+testData = [
     ("Burgas", -19, 0, 2010),
     ("Burgas", 7, 1, 2010),
     ("Burgas", -6, 2, 2010),
