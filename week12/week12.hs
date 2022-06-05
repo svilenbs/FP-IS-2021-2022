@@ -1,10 +1,44 @@
--- By defined Binary Tree of Int find the sum of all elements on the highest level in the tree.
--- By defined Binary Tree of Char find the longest word. In case of more that one, return one of them.
--- Return true if a Tree is a Binary  Search Tree.
--- By defined non-binary tree (Nodes are list) with Integer values return the sum of all elements.
+-- Return position of all elements that are not divided by n
+-- notDivided [1,2,6,2,3,8] 3 = [1,2,4,6]
+
+notDivided lst i = map (fst) $ filter(\(a,b) -> mod b i /= 0) $ zip [1,2..] lst
+
+
+-- By defined Binary Tree of Int find the sum of all elements on the deepest level in the tree.
 
 data Tree a = Leaf | Node a (Tree a) (Tree a) deriving (Show)
 
+getMaxHeight Leaf = 0
+getMaxHeight (Node _ l r) = 1 + max (getMaxHeight l) (getMaxHeight r)
+
+getSumOnLevel Leaf _ = 0
+getSumOnLevel (Node a _ _) 0 = a
+getSumOnLevel (Node _ l r) i = getSumOnLevel l (i-1) + getSumOnLevel r (i-1)
+
+getDeepestLeafSum tree = getSumOnLevel tree (getMaxHeight tree - 1)
+
+-- By defined Binary Tree of Char find the longest word. In case of more that one, return one of them.
+-- Return true if a Tree is a Binary  Search Tree.
+
+elements Leaf = []
+elements (Node a l r) = elements l ++ [a] ++ elements r
+
+isSorted [] _ = True
+isSorted [a] _  = True
+isSorted (a:b:xs) f
+    | f a b == False = False
+    | otherwise = isSorted (b:xs) f
+
+isEqual5 = (\x ->(==) x) 5 
+
+-- By defined non-binary tree (Nodes are list) with Integer values return the sum of all elements.
+data NTree = NodeMTree Int [NTree] deriving (Show)
+
+mTreeTestData = NodeMTree 3 [NodeMTree 5 [], NodeMTree 7 [NodeMTree 7 [NodeMTree 8 []]], NodeMTree 9 []]
+
+-- mTreeSum (NodeMTree key naslednici)
+mTreeSum (NodeMTree key []) = key
+mTreeSum (NodeMTree key children) = key + (foldr (+) 0 (map mTreeSum children))
 
 testIntTree :: Tree Integer
 testIntTree = Node 6 (Node 2 (Node 1 (Node (-1) Leaf Leaf) Leaf) Leaf) (Node 13 (Node 10 Leaf Leaf) (Node 18 (Node 17 Leaf Leaf) (Node 22 Leaf Leaf)))
@@ -16,6 +50,9 @@ testCharTree = Node 'a' (Node 'b'
 -- By location find the city with the closest city up to average for this regioun for a spesific year. 
 -- Definition ([Char], Int, Int, Int)
 -- (Name of the city, temperature, month, year)
+
+
+inf = [1,2..]
 
 testData = [
     ("Burgas", -19, 0, 2010),
